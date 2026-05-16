@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block title %}Dashboard - Vault Notes{% endblock %}
+{% block content %}
+<div class="dashboard">
+  <div class="nav">
+    <h1>🔐 Vault Dashboard</h1>
+    <div>
+      <span style="margin-right: 20px; color: #c3d6ee"
+        >Hello, <strong>{{ user['username'] }}</strong></span
+      >
+      <a href="{{ url_for('logout') }}">Lock Vault</a>
+    </div>
+  </div>
+
+  {% with messages = get_flashed_messages() %} {% if messages %} {% for message
+  in messages %}
+  <div class="alert alert-success">{{ message }}</div>
+  {% endfor %} {% endif %} {% endwith %}
+
+  <form
+    method="POST"
+    action="{{ url_for('add_note') }}"
+    style="margin-bottom: 30px"
+  >
+    <div class="form-group">
+      <label for="content">Add a new vault entry</label>
+      <textarea
+        id="content"
+        name="content"
+        maxlength="500"
+        required
+        placeholder="Enter your note for safekeeping..."
+      ></textarea>
+    </div>
+    <button type="submit">Secure Note</button>
+  </form>
+
+  {% if notes %}
+  <h2 style="margin-top: 30px; margin-bottom: 20px; color: #d4e8ff">
+    Saved Vault Entries
+  </h2>
+  <div class="notes-list">
+    {% for note in notes %}
+    <div class="note-item">
+      <p>{{ note['content'] }}</p>
+      <div class="note-date">🗓️ {{ note['created_at'] }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p style="text-align: center; color: #8ea9c9; margin-top: 30px">
+    Your vault is empty. Add a secure note above to get started.
+  </p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  vault-notes:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_SECRET_KEY: "change-this-secret-key-before-deployment"
+      FLASK_DEBUG: "0"
+      PORT: "5000"
+      VAULT_DB: "secure_notes.db"
+    volumes:
+      - ./secure_notes.db:/app/secure_notes.db
+    restart: unless-stopped
